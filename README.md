@@ -1,20 +1,19 @@
-# kubernetes-keycloak-sso
+# Config Access to Kubernetes using Keycloak
 
 Simple demonstration on how to manage access to kubernetes cluster using keycloak SSO.
 
-The demonstration will implement access for Devs with limited privileges and Admin with cluster admin privileges.
+The demonstration will implement access for Devs with limited privileges to view only **deployments** and **pods**, and Admin with clusterwide admin privileges.
 
-The advantage will reduce the overhead of manually granting access to the cluster and when integrated properly, the same user group and realm can be used to manage access across multiple application e.g ArgoCD, Grafana, etc.
-
+This approach will reduce the overhead of manually granting access to the cluster. When integrated properly, the same user group and realm can be used to manage access across multiple application e.g ArgoCD, Grafana, etc.
 
 ## Requirements
 
-1. Kubernetes cluster
+1. Kubernetes cluster (kubeadm cluster setup)
 2. Keycloak 
 3. kubectl-oidc-login plugin (kubelogin)
 4. kubectl 
 
-For the demonstration, I will be using:
+For this demo, I will be using:
 
 - kubernetes (v1.31.1)
 - keycloak (26.4.6)
@@ -34,10 +33,10 @@ Be sure to create a new Realm in keycloak for the demo. If you do not know how t
 ### Create two users `(john.doe & jane.doe)`
 
 1. After login, click on `Users` -> `Add user`
-2. Fill out `username` field and `Email`
+2. Fill out `username` with `john.doe` field and `Email` set to `john.doe@localhost`
 3. Click on create and navigate to `Credentials` tab 
 4. Set desired password and save. Temporary can be turned off for this demo 
-5. Repeat the same steps for jane.doe 
+5. Repeat the same steps for `jane.doe` 
 
 ### Create two groups `k8s-cluster-admin & k8s-cluster-dev`
 
@@ -45,7 +44,7 @@ Be sure to create a new Realm in keycloak for the demo. If you do not know how t
 2. Enter group name `k8s-cluster-admin` and create 
 3. Click on the newly created group -> `Members` tab
 4. Add member `john.doe` 
-5. Repeat step 1-4 for jane.doe
+5. Repeat step 1-4 for `jane.doe` and add user to `k8s-cluster-dev` group 
 
 ## 2. Create and config Client in Keycloak
 
